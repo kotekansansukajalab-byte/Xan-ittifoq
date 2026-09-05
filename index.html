@@ -3,39 +3,160 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Xan Ittifoq - Mafia WebApp</title>
+    <title>VENDETTA Mafia</title>
     <link rel="stylesheet" href="style.css">
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
 </head>
 <body>
     <div class="container">
-        <div class="header">
-            <h1>🌐 Xan Ittifoq Mafia</h1>
-            <p id="user-greeting">Xush kelibsiz, O'yinchi!</p>
-        </div>
-
-        <div class="stats-card">
-            <div class="stat-item">
-                <span>💵 Balans</span>
-                <h3 id="balance-val">$250.0</h3>
+        <!-- USER HEADER -->
+        <div class="user-header">
+            <div class="user-info">
+                <div class="avatar-box">👤</div>
+                <div>
+                    <h3 id="username-display">XAN 🇺🇸</h3>
+                    <p class="balance-text">$ <span id="user-balance">0</span> · 💎 <span id="user-diamonds">0</span></p>
+                </div>
             </div>
-            <div class="stat-item">
-                <span>💎 Olmoslar</span>
-                <h3 id="diamonds-val">20 ta</h3>
+            <div class="send-icon">↗</div>
+        </div>
+
+        <!-- TABS CONTENT -->
+        <!-- PROFIL -->
+        <div id="tab-profil" class="tab-content active">
+            <div class="stats-row">
+                <div class="mini-card">
+                    <p>Jami o'yinlar</p>
+                    <h2 id="total-games">0</h2>
+                </div>
+                <div class="mini-card">
+                    <p>G'alabalar</p>
+                    <h2 id="total-wins" style="color: #2ed573;">0</h2>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="row-between">
+                    <span>Klaningiz</span>
+                    <span id="user-clan" style="color: #a4b0be;">Klansiz</span>
+                </div>
+                <button class="btn-purple mt-10" onclick="openClanJoin()">Qo'shilish →</button>
+            </div>
+
+            <div class="card">
+                <h3>Himoya Tizimlari</h3>
+                <div class="toggle-row">
+                    <span>Asosiy Himoya <br><small>Sizda: <span id="sh-1">2</span> ta</small></span>
+                    <input type="checkbox" checked>
+                </div>
+                <div class="toggle-row">
+                    <span>Maska <br><small>Sizda: <span id="sh-2">1</span> ta</small></span>
+                    <input type="checkbox" checked>
+                </div>
+                <div class="toggle-row">
+                    <span>Soxta Hujjat <br><small>Sizda: <span id="sh-3">2</span> ta</small></span>
+                    <input type="checkbox" checked>
+                </div>
+                <div class="toggle-row">
+                    <span>Qotildan Himoya <br><small>Sizda: <span id="sh-4">0</span> ta</small></span>
+                    <input type="checkbox">
+                </div>
             </div>
         </div>
 
-        <div class="card">
-            <h3>⚡ Risk O'yinlari (2X va 16X)</h3>
-            <p>Pul va olmoslaringizni ko'paytirish uchun imkoniyat!</p>
-            <button class="btn-primary" onclick="playGame(2)">Pulni 2X qilish</button>
-            <button class="btn-success" onclick="playGame(16)">Olmosni 16X qilish</button>
+        <!-- O'YINLAR -->
+        <div id="tab-oyinlar" class="tab-content">
+            <div class="card">
+                <h3>📦 Sandiqlar</h3>
+                <div class="chest-box">🎁</div>
+                <div class="btn-group">
+                    <button class="btn-blue" onclick="playChest(50)">Super <br>💎 50</button>
+                    <button class="btn-pink" onclick="playChest(100)">Mega <br>💎 100</button>
+                </div>
+            </div>
+
+            <div class="card">
+                <h3>🎲 Ruletka (x2 / x10)</h3>
+                <input type="number" id="bet-amount" class="input-field" placeholder="Tikish miqdori ($)">
+                <div class="btn-group mt-10">
+                    <button class="btn-red" onclick="playRoulette('qizil')">Qizil (x2)</button>
+                    <button class="btn-green" onclick="playRoulette('qora')">Qora (x10)</button>
+                </div>
+            </div>
         </div>
 
-        <div class="card">
-            <h3>🤝 Ittifoq & Do'kon</h3>
-            <p>O'z ittifoqingizni boshqaring va maxsus rollarni oling.</p>
-            <button class="btn-warning" onclick="openAlliances()">Ittifoqlar ro'yxati</button>
+        <!-- BIRJA -->
+        <div id="tab-birja" class="tab-content">
+            <div class="card">
+                <div class="row-between">
+                    <h3 style="color: #ffa502;">🟡 Overlord Coin</h3>
+                    <h3>1 440 $</h3>
+                </div>
+                <p style="color: #a4b0be; font-size: 12px;">1 mg narxi</p>
+                <p class="mt-10">Sizda: <span id="mg-balance">0</span> mg</p>
+                <div class="chart-mock"></div>
+                <input type="number" id="mg-input" class="input-field mt-10" placeholder="Miqdor (mg)">
+                <div class="btn-group mt-10">
+                    <button class="btn-green" onclick="tradeMg('buy')">Sotib olish</button>
+                    <button class="btn-red" onclick="tradeMg('sell')">Sotish</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- KLANLAR -->
+        <div id="tab-klanlar" class="tab-content">
+            <div class="row-between mb-10">
+                <h3 style="font-size: 18px;">Top Klanlar</h3>
+                <button class="btn-purple" style="width: auto; padding: 6px 15px;" onclick="createClanModal()">+ Yaratish</button>
+            </div>
+            
+            <div class="card clan-item">
+                <div class="row-between">
+                    <span class="badge-num">#1</span>
+                    <div style="flex: 1; margin-left: 10px;">
+                        <h4>Bobur</h4>
+                        <p style="font-size: 11px; color: #a4b0be;">0 XP • Lvl 1</p>
+                    </div>
+                    <div style="text-align: right;">
+                        <span style="font-size: 11px; color: #a4b0be;">5 a'zo</span><br>
+                        <button class="btn-small">Qo'shilish</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card clan-item">
+                <div class="row-between">
+                    <span class="badge-num">#2</span>
+                    <div style="flex: 1; margin-left: 10px;">
+                        <h4>MAFIA</h4>
+                        <p style="font-size: 11px; color: #a4b0be;">0 XP • Lvl 1</p>
+                    </div>
+                    <div style="text-align: right;">
+                        <span style="font-size: 11px; color: #a4b0be;">13 a'zo</span><br>
+                        <button class="btn-small">Qo'shilish</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- BOTTOM NAVIGATION -->
+        <div class="bottom-nav">
+            <div class="nav-item active" onclick="switchTab('profil', this)">
+                <span>👤</span>
+                <p>Profil</p>
+            </div>
+            <div class="nav-item" onclick="switchTab('oyinlar', this)">
+                <span>🎲</span>
+                <p>O'yinlar</p>
+            </div>
+            <div class="nav-item" onclick="switchTab('birja', this)">
+                <span>📈</span>
+                <p>Birja</p>
+            </div>
+            <div class="nav-item" onclick="switchTab('klanlar', this)">
+                <span>👥</span>
+                <p>Klanlar</p>
+            </div>
         </div>
     </div>
 
@@ -43,22 +164,104 @@
         let tg = window.Telegram.WebApp;
         tg.expand();
 
+        let userData = {
+            balance: 0,
+            diamonds: 0,
+            games: 0,
+            wins: 0,
+            clan: "Klansiz",
+            mg: 0
+        };
+
+        // Telegram orqali botdan ma'lumot olish yoki sinxronizatsiya
         if (tg.initDataUnsafe && tg.initDataUnsafe.user) {
-            let firstName = tg.initDataUnsafe.user.first_name;
-            document.getElementById("user-greeting").innerText = `Salom, ${firstName}! O'yinni boshlaymiz.`;
+            document.getElementById("username-display").innerText = tg.initDataUnsafe.user.first_name + " 🇺🇸";
         }
 
-        function playGame(multiplier) {
-            if (multiplier === 2) {
-                alert("⚡ 2X o'yini ishga tushdi! Omad!");
-            } else if (multiplier === 16) {
-                alert("🚀 16X Super Jackpot rejimiga xush kelibsiz!");
+        function updateUI() {
+            document.getElementById("user-balance").innerText = userData.balance;
+            document.getElementById("user-diamonds").innerText = userData.diamonds;
+            document.getElementById("total-games").innerText = userData.games;
+            document.getElementById("total-wins").innerText = userData.wins;
+            document.getElementById("user-clan").innerText = userData.clan;
+            document.getElementById("mg-balance").innerText = userData.mg;
+        }
+
+        function switchTab(tabName, element) {
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
+            
+            document.getElementById('tab-' + tabName).classList.add('active');
+            element.classList.add('active');
+        }
+
+        function playRoulette(type) {
+            let bet = parseFloat(document.getElementById("bet-amount").value);
+            if (!bet || bet <= 0) {
+                alert("Tikish miqdorini kiriting!");
+                return;
             }
+            if (userData.balance < bet) {
+                alert("Balansingiz yetarli emas!");
+                return;
+            }
+            userData.balance -= bet;
+            userData.games++;
+
+            let win = false;
+            let multiplier = 2;
+
+            if (type === 'qizil' && Math.random() < 0.45) {
+                win = true;
+                multiplier = 2;
+            } else if (type === 'qora' && Math.random() < 0.10) {
+                win = true;
+                multiplier = 10;
+            }
+
+            if (win) {
+                let prize = bet * multiplier;
+                userData.balance += prize;
+                userData.wins++;
+                alert(`🎉 Tabriklaymiz! ${multiplier}x yutuq: $${prize}`);
+            } else {
+                alert("😢 Afsus, yutqazdingiz.");
+            }
+            updateUI();
         }
 
-        function openAlliances() {
-            alert("Ittifoqlar bo'limi ochilmoqda...");
+        function playChest(cost) {
+            if (userData.diamonds < cost) {
+                alert("Olmoslar yetarli emas!");
+                return;
+            }
+            userData.diamonds -= cost;
+            let reward = Math.random() > 0.5 ? cost * 2 : cost * 10;
+            userData.diamonds += reward;
+            alert(`🎁 Sandiq ochildi! Yutuq: ${reward} olmos!`);
+            updateUI();
         }
+
+        function tradeMg(action) {
+            let val = parseInt(document.getElementById("mg-input").value);
+            if (!val || val <= 0) return;
+            if (action === 'buy') {
+                let cost = val * 1440;
+                if (userData.balance < cost) { alert("Pul yetarli emas!"); return; }
+                userData.balance -= cost;
+                userData.mg += val;
+            } else {
+                if (userData.mg < val) { alert("MG yetarli emas!"); return; }
+                userData.mg -= val;
+                userData.balance += val * 1440;
+            }
+            updateUI();
+        }
+
+        function openClanJoin() { alert("Klanlar bo'limiga o'ting!"); }
+        function createClanModal() { alert("Yangi klan yaratish oynasi"); }
+
+        updateUI();
     </script>
 </body>
 </html>
