@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Xan Ittifoq - Mafia WebApp</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🌐 Xan Ittifoq Mafia</h1>
+            <p id="user-greeting">Xush kelibsiz, O'yinchi!</p>
+        </div>
+
+        <div class="stats-card">
+            <div class="stat-item">
+                <span>💵 Balans</span>
+                <h3 id="balance-val">$250.0</h3>
+            </div>
+            <div class="stat-item">
+                <span>💎 Olmoslar</span>
+                <h3 id="diamonds-val">20 ta</h3>
+            </div>
+        </div>
+
+        <div class="card">
+            <h3>⚡ Risk O'yinlari (2X va 16X)</h3>
+            <p>Pul va olmoslaringizni ko'paytirish uchun imkoniyat!</p>
+            <button class="btn-primary" onclick="playGame(2)">Pulni 2X qilish</button>
+            <button class="btn-success" onclick="playGame(16)">Olmosni 16X qilish</button>
+        </div>
+
+        <div class="card">
+            <h3>🤝 Ittifoq & Do'kon</h3>
+            <p>O'z ittifoqingizni boshqaring va maxsus rollarni oling.</p>
+            <button class="btn-warning" onclick="openAlliances()">Ittifoqlar ro'yxati</button>
+        </div>
+    </div>
+
+    <script>
+        let tg = window.Telegram.WebApp;
+        tg.expand();
+
+        if (tg.initDataUnsafe && tg.initDataUnsafe.user) {
+            let firstName = tg.initDataUnsafe.user.first_name;
+            document.getElementById("user-greeting").innerText = `Salom, ${firstName}! O'yinni boshlaymiz.`;
+        }
+
+        function playGame(multiplier) {
+            if (multiplier === 2) {
+                alert("⚡ 2X o'yini ishga tushdi! Omad!");
+            } else if (multiplier === 16) {
+                alert("🚀 16X Super Jackpot rejimiga xush kelibsiz!");
+            }
+        }
+
+        function openAlliances() {
+            alert("Ittifoqlar bo'limi ochilmoqda...");
+        }
+    </script>
+</body>
+</html>
